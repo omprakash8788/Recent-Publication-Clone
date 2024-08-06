@@ -1,24 +1,35 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { assets, blog_data } from "@/Assets/assets";
+// import { assets, blog_data } from "@/Assets/assets";
 import Image from "next/image";
 import { BiLogoDigitalocean } from "react-icons/bi";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import axios from "axios";
+import { FaFacebook } from "react-icons/fa";
+import { BsTwitterX } from "react-icons/bs";
+import { ImGooglePlus } from "react-icons/im";
 
 const page = ({ params }) => {
   const [data, setData] = useState(null);
   console.log(data);
 
-  const fetchData = () => {
-    for (let i = 0; i < blog_data.length; i++) {
-      if (Number(params.id) === blog_data[i].id) {
-        setData(blog_data[i]);
-        console.log(blog_data[i]);
-        break;
+
+  const fetchData =async () => {
+    // for (let i = 0; i < blog_data.length; i++) {
+    //   if (Number(params.id) === blog_data[i].id) {
+    //     setData(blog_data[i]);
+    //     console.log(blog_data[i]);
+    //     break;
+    //   }
+    // }
+    const response = await axios.get('/api/blog',{
+      params:{
+        id:params.id
       }
-    }
+    })
+    setData(response.data)
   };
   useEffect(() => {
     fetchData();
@@ -47,8 +58,8 @@ const page = ({ params }) => {
           </h1>
           <Image
             className="mx-auto mt-6 bprder border-white rounded-full"
-            src={data.author_img}
-            alt=""
+            src={data.authorImg}
+            alt="authorImg"
             width={60}
             height={60}
           />
@@ -94,9 +105,12 @@ const page = ({ params }) => {
             Share this artical on social media
           </p>
           <div className="flex">
-            <Image src={assets.facebook_icon} alt="" width={50} />
+            {/* <Image src={assets.facebook_icon} alt="" width={50} />
             <Image src={assets.twitter_icon} alt="" width={50} />
-            <Image src={assets.googleplus_icon} alt="" width={50} />
+            <Image src={assets.googleplus_icon} alt="" width={50} /> */}
+            <FaFacebook className="w-10 cursor-pointer hover:text-red-600"/>
+        <BsTwitterX  className="w-10 cursor-pointer hover:text-red-600"/>
+        <ImGooglePlus  className="w-10 cursor-pointer hover:text-red-600"/>
           </div>
         </div>
       </div>

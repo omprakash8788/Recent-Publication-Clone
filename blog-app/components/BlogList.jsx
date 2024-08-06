@@ -1,17 +1,32 @@
 "use client";
-import { blog_data } from "@/Assets/assets";
-import React, { useState } from "react";
+// import { blog_data } from "@/Assets/assets";
+import React, { useEffect, useState } from "react";
 import BlogItems from "./BlogItems";
+import axios from "axios";
 
 const BlogList = () => {
   const [menu, setMenu] = useState("All");
   // console.log(menu);
+  const [blogs, setBlogs]=useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const fecthBlog =async()=>{
+    const response = await axios.get('api/blog');
+    setBlogs(response.data.blogs);
+    console.log("here i am storing data", response.data.blogs)
+
+  }
+
+  useEffect(()=>{
+    fecthBlog()
+  },[])
+
+
   const itemsPerPage = 6;
 
 
   // Filter the data based on the selected category
-  const filteredData = blog_data.filter((item) =>
+  const filteredData = blogs.filter((item) =>
     menu === "All" ? true : item.category === menu
   );
 
@@ -72,7 +87,7 @@ const BlogList = () => {
           return (
             <BlogItems
               key={index}
-              id={item.id}
+              id={item._id}
               image={item.image}
               title={item.title}
               description={item.description}
